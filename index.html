@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/CUENCA_landslide_2.js"></script>
+        <script src="data/CUENCA_road_3.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[13.861569096278723,120.97901376422301],[13.95009757671605,121.12931749130249]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        var img_sar10_0 = 'data/sar10_0.png';
+        var img_bounds_sar10_0 = [[13.864787216611877,121.02915141887524],[13.946874089079325,121.0792341787631]];
+        var overlay_sar10_0 = new L.imageOverlay(img_sar10_0, img_bounds_sar10_0);
+        bounds_group.addLayer(overlay_sar10_0);
+        map.addLayer(overlay_sar10_0);
+        var overlay_OpenStreetMap_1 = L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            opacity: 1.0
+        });
+        overlay_OpenStreetMap_1.addTo(map);
+        map.addLayer(overlay_OpenStreetMap_1);
+        function pop_CUENCA_landslide_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? Autolinker.link(String(feature.properties['OBJECTID'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['QuadName'] !== null ? Autolinker.link(String(feature.properties['QuadName'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LndslideSu'] !== null ? Autolinker.link(String(feature.properties['LndslideSu'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SheetNo'] !== null ? Autolinker.link(String(feature.properties['SheetNo'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_Leng'] !== null ? Autolinker.link(String(feature.properties['SHAPE_Leng'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_Area'] !== null ? Autolinker.link(String(feature.properties['SHAPE_Area'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_CUENCA_landslide_2_0(feature) {
+            switch(String(feature.properties['LndslideSu'])) {
+                case 'High':
+                    return {
+                pane: 'pane_CUENCA_landslide_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,25,28,1.0)',
+            }
+                    break;
+                case 'Low':
+                    return {
+                pane: 'pane_CUENCA_landslide_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,191,1.0)',
+            }
+                    break;
+                case 'Moderate':
+                    return {
+                pane: 'pane_CUENCA_landslide_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(43,131,186,1.0)',
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_CUENCA_landslide_2');
+        map.getPane('pane_CUENCA_landslide_2').style.zIndex = 402;
+        map.getPane('pane_CUENCA_landslide_2').style['mix-blend-mode'] = 'normal';
+        var layer_CUENCA_landslide_2 = new L.geoJson(json_CUENCA_landslide_2, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_CUENCA_landslide_2',
+            onEachFeature: pop_CUENCA_landslide_2,
+            style: style_CUENCA_landslide_2_0,
+        });
+        bounds_group.addLayer(layer_CUENCA_landslide_2);
+        map.addLayer(layer_CUENCA_landslide_2);
+        function pop_CUENCA_road_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['osm_id'] !== null ? Autolinker.link(String(feature.properties['osm_id'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['name'] !== null ? Autolinker.link(String(feature.properties['name'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ref'] !== null ? Autolinker.link(String(feature.properties['ref'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['type'] !== null ? Autolinker.link(String(feature.properties['type'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['oneway'] !== null ? Autolinker.link(String(feature.properties['oneway'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['bridge'] !== null ? Autolinker.link(String(feature.properties['bridge'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['maxspeed'] !== null ? Autolinker.link(String(feature.properties['maxspeed'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_CUENCA_road_3_0() {
+            return {
+                pane: 'pane_CUENCA_road_3',
+                opacity: 1,
+                color: 'rgba(113,13,2,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+            }
+        }
+        map.createPane('pane_CUENCA_road_3');
+        map.getPane('pane_CUENCA_road_3').style.zIndex = 403;
+        map.getPane('pane_CUENCA_road_3').style['mix-blend-mode'] = 'normal';
+        var layer_CUENCA_road_3 = new L.geoJson(json_CUENCA_road_3, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_CUENCA_road_3',
+            onEachFeature: pop_CUENCA_road_3,
+            style: style_CUENCA_road_3_0,
+        });
+        bounds_group.addLayer(layer_CUENCA_road_3);
+        map.addLayer(layer_CUENCA_road_3);
+        setBounds();
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        </script>
+    </body>
+</html>
